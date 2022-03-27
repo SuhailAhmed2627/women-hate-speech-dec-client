@@ -46,3 +46,32 @@ input {
    background: transparent;
    border: none;
 }
+
+.tweets {
+   display: flex;
+   flex-direction: column;
+   overflow-x: hidden;
+   overflow-y: auto;
+   justify-content: start;
+   align-items: center;
+   margin-top: 2rem;
+   margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+   .mainHeaderContainer {
+      margin: 2rem;
+   }
+   .mainHeaderContainer > h1 {
+      font-size: 3rem;
+   }
+}
+
+@media screen and (max-width: 450px) {
+   .mainHeaderContainer {
+      margin: 1rem;
+   }
+   .mainHeaderContainer > h1 {
+      font-size: 2rem;
+   }
+}

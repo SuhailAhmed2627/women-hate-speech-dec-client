@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Tweet from "../Tweet/Tweet";
 import "./Landing.css";
 
 const Landing = () => {
    const [username, setUsername] = useState("");
+   const [renderTweets, setRenderTweets] = useState(false);
+   const [data, setData] = useState([]);
 
    const handleChange = (e) => {
       setUsername(e.target.value);
@@ -14,22 +17,43 @@ const Landing = () => {
          .post("http://localhost:9000/detect", {
             username: username,
          })
-         .then((res) => res.json())
-         .then((data) => {
-            console.log(data);
+         .then((res) => {
+            setData(res.data.data);
          })
          .catch((err) => console.log(err));
    };
+
+   useEffect(() => {
+      if (data.length > 0) {
+         setRenderTweets(true);
+         if (window.twttr) {
+            window.twttr.widgets.load();
+         }
+      }
+   }, [data]);
+
    return (
       <div className="mainHeaderContainer">
-         <h1>Detect Hate Speech against user</h1>
-         <div className="formContainer">
-            <input
-               placeholder="Enter Twitter Username..."
-               onChange={handleChange}
-            />
-            <button onClick={handleSubmit}>Submit</button>
-         </div>
+         {renderTweets ? (
+            <div className="tweets">
+               {data.map((tweet) => {
+                  return (
+                     <Tweet key={tweet.id} tweet={tweet} username={username} />
+                  );
+               })}
+            </div>
+         ) : (
+            <>
+               <h1>Detect Hate Speech against user</h1>
+               <div className="formContainer">
+                  <input
+                     placeholder="Enter Twitter Username..."
+                     onChange={handleChange}
+                  />
+                  <button onClick={handleSubmit}>Submit</button>
+               </div>
+            </>
+         )}
       </div>
    );
 };
