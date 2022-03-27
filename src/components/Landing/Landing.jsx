@@ -7,12 +7,14 @@ const Landing = () => {
    const [username, setUsername] = useState("");
    const [renderTweets, setRenderTweets] = useState(false);
    const [data, setData] = useState([]);
+   const [status, setStatus] = useState("");
 
    const handleChange = (e) => {
       setUsername(e.target.value);
    };
 
    const handleSubmit = () => {
+      setStatus("Loading...");
       axios
          .post("http://localhost:9000/detect", {
             username: username,
@@ -50,6 +52,7 @@ const Landing = () => {
                      placeholder="Enter Twitter Username..."
                      onChange={handleChange}
                   />
+                  <p>{status}</p>
                   <button onClick={handleSubmit}>Submit</button>
                </div>
             </>
